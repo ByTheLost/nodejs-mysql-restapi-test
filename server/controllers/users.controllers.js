@@ -1,10 +1,10 @@
-import { pool } from "../db.js";
+import { pool } from '../db.js';
 
-// Buscar todas la quejas
-export const getClaims = async (req, res) => {
+// Buscar todos los usuarios
+export const getUsers = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "SELECT * FROM claims ORDER BY createdAt ASC"
+      "SELECT * FROM users ORDER BY createdAt ASC"
     );
     console.log(result);
     res.json(result);
@@ -14,9 +14,9 @@ export const getClaims = async (req, res) => {
 };
 
 // Buscar una sola queja
-export const getClaim = async (req, res) => {
+export const getUser = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM claims WHERE id = ?", [
+    const [result] = await pool.query("SELECT * FROM users WHERE id = ?", [
       req.params.id,
     ]);
     if (result.length === 0) {
@@ -28,19 +28,23 @@ export const getClaim = async (req, res) => {
   }
 };
 
-// Crear una queja
-export const createClaim = async (req, res) => {
+// Crear un usuario
+export const createUser = async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { cc, name, lastname, cel, email, password } = req.body;
     const [result] = await pool.query(
-      "INSERT INTO claims(title, description) VALUES (?,?)",
-      [title, description]
+      "INSERT INTO users(cc, name, lastname, cel, email, password) VALUES (?,?,?,?,?,?)",
+      [cc, name, lastname, cel, email, password]
     );
     console.log(result);
     res.json({
       id: result.insertId,
-      title,
-      description,
+      cc,
+      name,
+      lastname,
+      cel,
+      email,
+      password
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -48,9 +52,9 @@ export const createClaim = async (req, res) => {
 };
 
 // Actualizar queja
-export const updateClaim = async (req, res) => {
+export const updateUser = async (req, res) => {
   try {
-    const result = await pool.query("UPDATE claims SET ? WHERE id = ?", [
+    const result = await pool.query("UPDATE users SET ? WHERE id = ?", [
       req.body,
       req.params.id,
     ]);
@@ -61,9 +65,9 @@ export const updateClaim = async (req, res) => {
 };
 
 // Eliminar una queja
-export const deleteClaim = async (req, res) => {
+export const deleteUser = async (req, res) => {
   try {
-    const [result] = await pool.query("DELETE FROM claims WHERE id = ?", [
+    const [result] = await pool.query("DELETE FROM users WHERE id = ?", [
       req.params.id,
     ]);
     if (result.affectedRows === 0) {
@@ -74,4 +78,3 @@ export const deleteClaim = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
