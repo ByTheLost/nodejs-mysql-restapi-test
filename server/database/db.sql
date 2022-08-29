@@ -1,4 +1,40 @@
--- Create claims table
+-- Create table of users
+CREATE TABLE users (
+  id_user INTEGER UNIQUE PRIMARY KEY AUTO_INCREMENT,
+  cc VARCHAR(10) UNIQUE NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  lastname VARCHAR(50) NOT NULL,
+  phone VARCHAR(10) NOT NULL,
+  email VARCHAR(50) UNIQUE NOT NULL,
+  password VARCHAR(200) NOT NULL,
+  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create table of claims
+CREATE TABLE claims (
+  id_claim INTEGER UNIQUE PRIMARY KEY AUTO_INCREMENT,
+  id_user INTEGER,
+  title VARCHAR(200) NOT NULL,
+  description VARCHAR(300),
+  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(id_user) REFERENCES users(id_user)
+);
+
+-- Crete table of roles
+CREATE TABLE roles (
+  id_role INTEGER UNIQUE PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) 
+);
+
+-- Create table of users_roles
+CREATE TABLE users_roles (
+  id_user INTEGER,
+  id_role INTEGER,
+  FOREIGN KEY(id_role) REFERENCES roles(id_role),
+  FOREIGN KEY(id_user) REFERENCES users(id_user)
+);
+
+/* -- Create claims table
 CREATE TABLE claims (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   title VARCHAR(200) NOT NULL,
@@ -16,4 +52,4 @@ CREATE TABLE users (
   email VARCHAR(50) UNIQUE NOT NULL,
   password VARCHAR(200) NOT NULL,
   createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
+); */

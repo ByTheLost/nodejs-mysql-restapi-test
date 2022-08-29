@@ -13,14 +13,14 @@ export const getUsers = async (req, res) => {
   }
 };
 
-// Buscar una sola queja
-export const getUser = async (req, res) => {
+// Buscar un solo usuario
+export const getUserById = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM users WHERE id = ?", [
+    const [result] = await pool.query("SELECT * FROM users WHERE id_user = ?", [
       req.params.id,
     ]);
     if (result.length === 0) {
-      return res.status(404).json({ message: "Queja no encontrada." });
+      return res.status(404).json({ message: "Usuario no encontrado." });
     }
     res.json(result[0]);
   } catch (error) {
@@ -31,30 +31,30 @@ export const getUser = async (req, res) => {
 // Crear un usuario
 export const createUser = async (req, res) => {
   try {
-    const { cc, name, lastname, cel, email, password } = req.body;
+    const { cc, name, lastname, phone, email, password } = req.body;
     const [result] = await pool.query(
-      "INSERT INTO users(cc, name, lastname, cel, email, password) VALUES (?,?,?,?,?,?)",
-      [cc, name, lastname, cel, email, password]
-    );
+      "INSERT INTO users(cc, name, lastname, phone, email, password) VALUES (?,?,?,?,?,?)",
+      [cc, name, lastname, phone, email, password]
+     );
     console.log(result);
     res.json({
-      id: result.insertId,
+      id_user: result.insertId,
       cc,
       name,
       lastname,
-      cel,
+      phone,
       email,
       password
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
-  }
+  };
 };
 
-// Actualizar queja
-export const updateUser = async (req, res) => {
+// Actualizar un usuario
+export const updateUserById = async (req, res) => {
   try {
-    const result = await pool.query("UPDATE users SET ? WHERE id = ?", [
+    const result = await pool.query("UPDATE users SET ? WHERE id_user = ?", [
       req.body,
       req.params.id,
     ]);
@@ -64,14 +64,14 @@ export const updateUser = async (req, res) => {
   }
 };
 
-// Eliminar una queja
-export const deleteUser = async (req, res) => {
+// Eliminar un usuario
+export const deleteUserById = async (req, res) => {
   try {
-    const [result] = await pool.query("DELETE FROM users WHERE id = ?", [
+    const [result] = await pool.query("DELETE FROM users WHERE id_user = ?", [
       req.params.id,
     ]);
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Queja no encontrada" });
+      return res.status(404).json({ message: "Usuario no encontrado." });
     }
     return res.sendStatus(204);
   } catch (error) {

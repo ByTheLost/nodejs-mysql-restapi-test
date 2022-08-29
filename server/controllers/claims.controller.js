@@ -14,9 +14,9 @@ export const getClaims = async (req, res) => {
 };
 
 // Buscar una sola queja
-export const getClaim = async (req, res) => {
+export const getClaimById = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM claims WHERE id = ?", [
+    const [result] = await pool.query("SELECT * FROM claims WHERE id_claim = ?", [
       req.params.id,
     ]);
     if (result.length === 0) {
@@ -38,7 +38,7 @@ export const createClaim = async (req, res) => {
     );
     console.log(result);
     res.json({
-      id: result.insertId,
+      id_claim: result.insertId,
       title,
       description,
     });
@@ -48,9 +48,9 @@ export const createClaim = async (req, res) => {
 };
 
 // Actualizar queja
-export const updateClaim = async (req, res) => {
+export const updateClaimById = async (req, res) => {
   try {
-    const result = await pool.query("UPDATE claims SET ? WHERE id = ?", [
+    const result = await pool.query("UPDATE claims SET ? WHERE id_claim = ?", [
       req.body,
       req.params.id,
     ]);
@@ -61,9 +61,9 @@ export const updateClaim = async (req, res) => {
 };
 
 // Eliminar una queja
-export const deleteClaim = async (req, res) => {
+export const deleteClaimById = async (req, res) => {
   try {
-    const [result] = await pool.query("DELETE FROM claims WHERE id = ?", [
+    const [result] = await pool.query("DELETE FROM claims WHERE id_claim = ?", [
       req.params.id,
     ]);
     if (result.affectedRows === 0) {
