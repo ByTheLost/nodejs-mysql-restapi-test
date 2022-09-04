@@ -1,26 +1,31 @@
-import { Router } from 'express';
-import { checkJWT } from './jwtauth'
+/* import { Router } from 'express';*/
+import { checkJWT } from './jwtauth.js';
+import { pool } from '../db.js'
 
-const router = Router();
+export const validateJWT = async (req, res, next) => {
+  const token = req.header('x-token');
 
-router.use((req, res, next) => {
+  if( !token ){
+    return res.status(401).json({
+      msg: "Debe enviar el token generado"
+    });
+  };
   try {
-    const authHead = req.headers.authorization;
-    if (!authHead) {
-      return res.status(400).json({
-        msg: 'Debe enviar el token generado',
-        code: -1
-      })
-    }
-    const token = authHead.replace('Bearer ', '')
-    const payload = checkJWT(token)
-    next()
-  } catch (error) {
-    res.status(500).json({
-      msg: `Hubo un error al verificar el token ${error}`,
-      code: -1
-    })
-  }
-})
+    const { uid } = checkJWT( token )
+    const [user] = await pool.query("SELECT * FROM users WHERE id_user = ?", [uid])
 
-export default router;
+    if(user.length === 0){
+      return res.status(401).json({
+        msg: "El usuario no existe en la Base de datos"
+      });
+    };
+
+    req.user = user
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      msg: "El token no es valido"
+    });
+  }
+};

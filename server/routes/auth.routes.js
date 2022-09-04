@@ -6,10 +6,10 @@ import { singUp, singIn } from "../controllers/auth.controller.js";
 const router = Router();
 
 router.post("/signup",[
-  check('cc', 'La cedula es obligatoria').not().isEmpty(),
-  check('name', 'El nombre es obligatorio').not().isEmpty(),
-  check('lastname', 'El apellido es obligatorio').not().isEmpty(),
-  check('phone', 'La celular es obligatorio').not().isEmpty(),
+  check('cc', 'La cedula es obligatoria').not().isEmpty().isInt().isLength({ max: 10}),
+  check('name', 'El nombre es obligatorio').not().isEmpty().isString().isLength({ min: 3 }),
+  check('lastname', 'El apellido es obligatorio').not().isEmpty().isString().isLength({ min: 3 }),
+  check('phone', 'La celular es obligatorio').not().isEmpty().isMobilePhone(),
   check('email', 'El email no es valido').isEmail(),
   check('password', 'La contraseña es obligatoria').not().isEmpty(),
   check('password', 'La contraseña debe tener como minimo 5 caracteres').isLength({ min: 5 }),

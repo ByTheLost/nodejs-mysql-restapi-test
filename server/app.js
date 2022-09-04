@@ -4,8 +4,10 @@ import usersRoutes from './routes/users.routes.js'
 import indexRoutes from './routes/index.routes.js';
 import claimsRoutes from './routes/claims.routes.js';
 import authRoutes from './routes/auth.routes.js';
+import { createRoles } from './libs/initialSetup.js';
 
 const app = express();
+createRoles();
 
 // Middlewares
 app.use(express.json());

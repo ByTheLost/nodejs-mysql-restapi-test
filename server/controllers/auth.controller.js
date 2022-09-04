@@ -2,18 +2,31 @@ import { pool } from '../db.js';
 import bcrypt from 'bcryptjs';
 import { generateJWT } from '../middlewares/jwtauth.js';
 
+// Registro de usuario
 export const singUp = async (req, res) => {
 
   try {
-    const { cc, name, lastname, phone, email, password } = req.body;
+    const { cc, name, lastname, phone, email, password, role } = req.body;
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash( password, salt );
-    console.log(passwordHash);
     const [result] = await pool.query(
       "INSERT INTO users(cc, name, lastname, phone, email, password) VALUES (?,?,?,?,?,?)",
       [cc, name, lastname, phone, email, passwordHash]
     );
-    console.log(result);
+    if (req.body.role === 'admin') {
+      const [foundRoles] = await pool.query("SELECT id_role FROM roles WHERE name = ?", [req.body.role]);
+      const [foundId] = await pool.query("SELECT id_user FROM users WHERE cc = ?", [req.body.cc])
+      await pool.query("UPDATE users SET role = ? WHERE id_user = ?", [foundRoles[0].id_role, foundId[0].id_user]);
+    };
+    if (req.body.role === 'moderator') {
+      const [foundRoles] = await pool.query("SELECT id_role FROM roles WHERE name = ?", [req.body.role]);
+      const [foundId] = await pool.query("SELECT id_user FROM users WHERE cc = ?", [req.body.cc])
+      await pool.query("UPDATE users SET role = ? WHERE id_user = ?", [foundRoles[0].id_role, foundId[0].id_user]);
+    };
+    if (!req.body.role){
+      const [foundId] = await pool.query("SELECT id_user FROM users WHERE cc = ?", [req.body.cc])
+      await pool.query("UPDATE users SET role = 3 WHERE id_user = ?", [foundId[0].id_user]);
+    };
     res.json({
       id_user: result.insertId,
       cc,
@@ -22,6 +35,7 @@ export const singUp = async (req, res) => {
       phone,
       email,
       password: passwordHash,
+      role: role,
       msg: 'Se ha registrado correctamente'
     });
   } catch (error) {
@@ -29,6 +43,7 @@ export const singUp = async (req, res) => {
   };
 };
 
+// Login de usuario
 export const singIn = async (req, res) => {
   try {
 
@@ -44,7 +59,7 @@ export const singIn = async (req, res) => {
       });
     };
 
-    // Verificar contrasena
+    // Verificar contraseña
     const validPassword = await bcrypt.compare(password, result[0].password);
     if (!validPassword) {
       return res.status(400).json({
