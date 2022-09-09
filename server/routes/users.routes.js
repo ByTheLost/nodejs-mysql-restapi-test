@@ -1,36 +1,29 @@
-import { Router } from 'express';
-import { validateJWT } from '../middlewares/middlewareToken.js';
-import { isAdmin } from '../middlewares/validateRoles.js';
+import { Router } from "express";
 import {
-  getUsers,
-  getUserById,
   createUser,
+  deleteUserById,
+  getUserById,
+  getUsers,
   updateUserById,
-  deleteUserById
-} from '../controllers/users.controllers.js'
-import { 
-  existCc, 
+} from "../controllers/users.controllers.js";
+import { validateJWT } from "../middlewares/middlewareToken.js";
+import {
+  existCc,
   existEmail,
-  validateFields
-} from '../middlewares/validateFields.js';
+  validateFields,
+} from "../middlewares/validateFields.js";
+import { isAdmin } from "../middlewares/validateRoles.js";
 
 const router = Router();
 
-router.get('/', getUsers);
+router.get("/", getUsers);
 
-router.get('/:id', getUserById);
+router.get("/:id", getUserById);
 
-router.post('/', createUser);
+router.post("/", createUser);
 
-router.put('/:id', [
-  existCc,
-  existEmail
-],updateUserById);
+router.put("/:id", [existCc, existEmail], updateUserById);
 
-router.delete('/:id', [
-  validateJWT,
-  isAdmin,
-  validateFields
-],deleteUserById);
+router.delete("/:id", [validateJWT, isAdmin, validateFields], deleteUserById);
 
 export default router;

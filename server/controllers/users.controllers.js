@@ -1,4 +1,4 @@
-import { pool } from '../db.js';
+import { pool } from "../db.js";
 
 // Buscar todos los usuarios
 export const getUsers = async (req, res) => {
@@ -35,7 +35,7 @@ export const createUser = async (req, res) => {
     const [result] = await pool.query(
       "INSERT INTO users(cc, name, lastname, phone, email, password) VALUES (?,?,?,?,?,?)",
       [cc, name, lastname, phone, email, password]
-     );
+    );
     console.log(result);
     res.json({
       id_user: result.insertId,
@@ -44,11 +44,11 @@ export const createUser = async (req, res) => {
       lastname,
       phone,
       email,
-      password
+      password,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
-  };
+  }
 };
 
 // Actualizar un usuario
@@ -71,12 +71,11 @@ export const deleteUserById = async (req, res) => {
       req.params.id,
     ]);
     if (result.affectedRows === 0) {
-      return res.status(404).json({ 
-        message: "Usuario no encontrado."
+      return res.status(404).json({
+        message: "Usuario no encontrado.",
       });
-    };
+    }
     return res.sendStatus(204);
-
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

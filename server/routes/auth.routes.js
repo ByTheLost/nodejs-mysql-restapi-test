@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { check } from 'express-validator'
-import { existEmail, validateFields, existCc } from '../middlewares/validateFields.js';
-import { singUp, singIn } from "../controllers/auth.controller.js";
+import { check } from 'express-validator';
+import { singIn, singUp } from "../controllers/auth.controller.js";
+import { existCc, existEmail, validateFields } from '../middlewares/validateFields.js';
 
 const router = Router();
 

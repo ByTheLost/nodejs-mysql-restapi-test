@@ -16,9 +16,10 @@ export const getClaims = async (req, res) => {
 // Buscar una sola queja
 export const getClaimById = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM claims WHERE id_claim = ?", [
-      req.params.id,
-    ]);
+    const [result] = await pool.query(
+      "SELECT * FROM claims WHERE id_claim = ?",
+      [req.params.id]
+    );
     if (result.length === 0) {
       return res.status(404).json({ message: "Queja no encontrada." });
     }
@@ -31,12 +32,13 @@ export const getClaimById = async (req, res) => {
 // Crear una queja
 export const createClaim = async (req, res) => {
   try {
+    const user = req.user[0];
     const { title, description } = req.body;
     const [result] = await pool.query(
       "INSERT INTO claims(title, description) VALUES (?,?)",
       [title, description]
     );
-    console.log(result);
+    await pool.query("UPDATE claims SET id_user = ? WHERE id_claim = ?", [user.id_user, result.insertId])
     res.json({
       id_claim: result.insertId,
       title,

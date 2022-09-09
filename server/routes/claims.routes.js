@@ -1,22 +1,23 @@
-import { Router } from 'express';
+import { Router } from "express";
 import {
-  getClaims,
-  getClaimById,
   createClaim,
+  deleteClaimById,
+  getClaimById,
+  getClaims,
   updateClaimById,
-  deleteClaimById
-} from '../controllers/claims.controller.js';
+} from "../controllers/claims.controller.js";
+import { validateJWT } from "../middlewares/middlewareToken.js";
 
 const router = Router();
 
-router.get('/', getClaims);
+router.get("/", getClaims);
 
-router.get('/:id', getClaimById);
+router.get("/:id", getClaimById);
 
-router.post('/', createClaim);
+router.post("/", [validateJWT], createClaim);
 
-router.put('/:id', updateClaimById);
+router.put("/:id", updateClaimById);
 
-router.delete('/:id', deleteClaimById);
+router.delete("/:id", deleteClaimById);
 
 export default router;
