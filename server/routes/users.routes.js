@@ -1,6 +1,5 @@
 import { Router } from "express";
 import {
-  createUser,
   deleteUserById,
   getUserById,
   getUsers,
@@ -16,13 +15,11 @@ import { isAdmin } from "../middlewares/validateRoles.js";
 
 const router = Router();
 
-router.get("/", getUsers);
+router.get("/", [validateJWT, isAdmin], getUsers);
 
-router.get("/:id", getUserById);
+router.get("/:id", [validateJWT, isAdmin],getUserById);
 
-router.post("/", createUser);
-
-router.put("/:id", [existCc, existEmail], updateUserById);
+router.put("/:id", [validateJWT, isAdmin, existCc, existEmail], updateUserById);
 
 router.delete("/:id", [validateJWT, isAdmin, validateFields], deleteUserById);
 

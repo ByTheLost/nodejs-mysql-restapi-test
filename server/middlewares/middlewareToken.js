@@ -18,7 +18,7 @@ export const validateJWT = async (req, res, next) => {
       return res.status(401).json({
         msg: "El usuario no existe en la Base de datos",
       });
-    }
+    };
 
     req.user = user;
     next();
@@ -27,5 +27,5 @@ export const validateJWT = async (req, res, next) => {
     res.status(401).json({
       msg: "El token no es valido",
     });
-  }
+  };
 };

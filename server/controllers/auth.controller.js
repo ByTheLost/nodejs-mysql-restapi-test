@@ -95,6 +95,7 @@ export const singIn = async (req, res) => {
       result: result[0],
       Token,
     });
+    
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

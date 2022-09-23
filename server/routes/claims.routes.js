@@ -7,6 +7,7 @@ import {
   updateClaimById,
 } from "../controllers/claims.controller.js";
 import { validateJWT } from "../middlewares/middlewareToken.js";
+import { isAdmin } from "../middlewares/validateRoles.js";
 
 const router = Router();
 
@@ -16,8 +17,8 @@ router.get("/:id", getClaimById);
 
 router.post("/", [validateJWT], createClaim);
 
-router.put("/:id", updateClaimById);
+router.put("/:id", [validateJWT], updateClaimById);
 
-router.delete("/:id", deleteClaimById);
+router.delete("/:id", [validateJWT], deleteClaimById);
 
 export default router;

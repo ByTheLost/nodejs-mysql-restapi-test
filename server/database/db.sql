@@ -31,11 +31,3 @@ CREATE TABLE claims (
 drop table claims;
 drop table users;
 drop table roles;
-
--- Create table of users_roles
-/* CREATE TABLE users_roles (
-  id_user INTEGER,
-  id_role INTEGER,
-  FOREIGN KEY(id_role) REFERENCES roles(id_role),
-  FOREIGN KEY(id_user) REFERENCES users(id_user)
-); */

@@ -52,10 +52,14 @@ export const createClaim = async (req, res) => {
 // Actualizar queja
 export const updateClaimById = async (req, res) => {
   try {
-    const result = await pool.query("UPDATE claims SET ? WHERE id_claim = ?", [
+    const [result] = await pool.query("UPDATE claims SET ? WHERE id_claim = ? AND id_user = ?", [
       req.body,
       req.params.id,
+      req.user[0].id_user,
     ]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Queja no encontrada" });
+    }
     res.json(result);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -65,12 +69,24 @@ export const updateClaimById = async (req, res) => {
 // Eliminar una queja
 export const deleteClaimById = async (req, res) => {
   try {
-    const [result] = await pool.query("DELETE FROM claims WHERE id_claim = ?", [
-      req.params.id,
-    ]);
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Queja no encontrada" });
-    }
+    console.log(req.user[0].role)
+    if (req.user[0].role == "1" || req.user[0].role == "2") {
+      const [result] = await pool.query("DELETE FROM claims WHERE id_claim = ?", [
+        req.params.id,
+      ]);
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Queja no encontrada" });
+      }
+    };
+    if (req.user[0].role == "3") {
+      const [result] = await pool.query("DELETE FROM claims WHERE id_claim = ? AND id_user = ?", [
+        req.params.id,
+        req.user[0].id_user,
+      ]);
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Queja no encontrada" });
+      }
+    };
     return res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ message: error.message });
