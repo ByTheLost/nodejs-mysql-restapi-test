@@ -15,12 +15,12 @@ import { isAdmin } from "../middlewares/validateRoles.js";
 
 const router = Router();
 
-router.get("/", [validateJWT, isAdmin], getUsers);
+router.get("/", [/* validateJWT, isAdmin */], getUsers);
 
-router.get("/:id", [validateJWT, isAdmin],getUserById);
+router.get("/:id", [/* validateJWT, isAdmin */],getUserById);
 
-router.put("/:id", [validateJWT, isAdmin, existCc, existEmail], updateUserById);
+router.put("/:id", [/* validateJWT, isAdmin, existCc, existEmail */], updateUserById);
 
-router.delete("/:id", [validateJWT, isAdmin, validateFields], deleteUserById);
+router.delete("/:id", [/* validateJWT, isAdmin, validateFields */], deleteUserById);
 
 export default router;
