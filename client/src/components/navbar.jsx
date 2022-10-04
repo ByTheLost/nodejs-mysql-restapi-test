@@ -1,28 +1,21 @@
 import { Link } from 'react-router-dom';
+import { NavContainer } from '../styled-components/Navbar.styled';
 
 function Navbar() {
+
   return (
-    <div>
-
-      <h1>Trasmi con Node, React y MySQL</h1>
-
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
+    <>
+      <NavContainer>
+        <h2>Navbar <span>Responsive</span></h2>
+        <div>
+          <Link classname = "links" to="/">Home</Link>
           <Link to="/login">Login</Link>
-        </li>
-        <li>
           <Link to="/register">Register</Link>
-        </li>
-        <li>
           <Link to="/private/users">Usuarios</Link>
-        </li>
-      </ul>
-
-    </div>
+        </div>
+      </NavContainer>
+    </>
   )
 }
 
-export default Navbar
+export default Navbar;

@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { pool } from "../db.js";
 
 // Buscar todos los usuarios
@@ -31,6 +32,17 @@ export const getUserById = async (req, res) => {
 // Actualizar un usuario
 export const updateUserById = async (req, res) => {
   try {
+    const { cc, name, lastname, phone, email, password } = req.body;
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password, salt);
+    req.body = {
+      cc: cc,
+      name: name,
+      lastname: lastname,
+      phone: phone,
+      email: email,
+      password: passwordHash,
+    };
     const [result] = await pool.query("UPDATE users SET ? WHERE id_user = ?", [
       req.body,
       req.params.id,

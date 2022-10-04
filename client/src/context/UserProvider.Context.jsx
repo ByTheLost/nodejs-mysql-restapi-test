@@ -32,7 +32,7 @@ export const UserContextProvider = ({ children }) => {
   const createUser = async (user) => {
     try {
       const response = await createUserRequest(user);
-      console.log(response.data);
+      //console.log(response.data);
       setUsers([...users, response.data]);
     } catch (error) {
       console.log(error); 
@@ -51,7 +51,6 @@ export const UserContextProvider = ({ children }) => {
   const updateUser = async (id, newFields) => {
     try {
       const response = await updateUserRequest(id, newFields);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

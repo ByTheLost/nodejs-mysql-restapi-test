@@ -10,13 +10,13 @@ import { LoginContextProvider } from './context/LoginProvider.Context';
 import LoginPage from './pages/Login/login.page';
 
 import Navbar from './components/navbar'
+import './App.css'
 
 function App() {
   return (
-
     <LoginContextProvider>
       <UserContextProvider>
-        <Navbar/>
+      <Navbar/>
         <Routes>
           <Route path="/" element={<ClaimsPage/>}/>
           <Route path="/register" element={<RegisterPage/>}/>

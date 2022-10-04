@@ -18,14 +18,14 @@ export const LoginContextProvider = ({ children }) => {
     try {
       const response = await createLoginRequest(user);
       console.log(response.data);
-      setLogin([...users, response.data]);
+      setLogin([...login, response.data]);
     } catch (error) {
       console.log(error); 
     };
   };
 
   return (
-    <LoginContext.Provider value = {{ login, setLogin }}>
+    <LoginContext.Provider value = {{ login, setLogin, createLogin }}>
       {children}
     </LoginContext.Provider>
   );
