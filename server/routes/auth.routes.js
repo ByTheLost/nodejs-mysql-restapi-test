@@ -18,10 +18,10 @@ router.post("/signup",[
   existEmail
 ],singUp);
 
-router.post("/signin",[
+router.post("/signin", [
   check('email', 'El email no es valido').isEmail(),
   check('password', 'La contraseña es obligatoria').not().isEmpty(),
-  validateFields
+  validateFields,
 ],singIn);
 
 export default router;

@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import { useLoginContext } from '../../context/LoginProvider.Context'
 import { StyleForm, Input } from '../../styled-components/register.styled';
-import * as Yup from 'yup';
+import * as Yup from 'yup';                        
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string()
@@ -13,7 +13,7 @@ function LoginPage() {
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1 className='prueba'>Login</h1>
       <Formik
         initialValues={{
           email: "",
@@ -28,7 +28,7 @@ function LoginPage() {
         {({handleChange, handleSubmit, isSubmitting, values, errors, touched}) => (
           <StyleForm onSubmit={handleSubmit}>
 
-            <Input type="text" placeholder="Correo electronico" name="email" onChange={handleChange} value={values.email}/> {
+            <Input className = "campos" type="text" placeholder="Correo electronico" name="email" onChange={handleChange}value={values.email}/> {
               errors.email && touched.email ? (
                 <div>{errors.email}</div>
               ) : null
@@ -39,7 +39,7 @@ function LoginPage() {
             <button type='submit' disabled={isSubmitting}>
               {isSubmitting ? "Guardando..." : "Entrar"}
             </button>
-        
+          
           </StyleForm>
         )}
       </Formik>

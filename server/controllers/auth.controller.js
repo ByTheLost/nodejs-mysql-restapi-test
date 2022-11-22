@@ -92,8 +92,9 @@ export const singIn = async (req, res) => {
     // Generar Token
     const Token = await generateJWT(result[0].id_user);
     res.json({
+      msg: "Logueado correctamente",
       result: result[0],
-      Token,
+      Token: Token,
     });
     
   } catch (error) {

@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import cors from 'cors'
 import morgan from "morgan";
 import { createRoles } from "./libs/initialSetup.js";
@@ -14,6 +15,7 @@ createRoles();
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(cookieParser());
 
 // Routes
 app.use("/ping", indexRoutes);

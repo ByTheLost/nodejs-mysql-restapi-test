@@ -17,7 +17,7 @@ export const LoginContextProvider = ({ children }) => {
   const createLogin = async (user) => {
     try {
       const response = await createLoginRequest(user);
-      console.log(response.data);
+      console.log(response);
       setLogin([...login, response.data]);
     } catch (error) {
       console.log(error); 
